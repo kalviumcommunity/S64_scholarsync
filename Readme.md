@@ -131,7 +131,7 @@ def calculateEligibility(student_profile, scholarship_criteria):
 5. Initialize scholarship database
 6. Run the application
 
-## 📊 Project Structure
+
 
 
 
