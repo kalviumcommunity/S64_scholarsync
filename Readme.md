@@ -1,168 +1,293 @@
-# ScholarSync 🎓
+# ScholarSync AI - Complete Implementation
 
-**Automated Scholarship Eligibility Checker**
-
-ScholarSync is an intelligent AI-powered system that analyzes student profiles to identify and suggest eligible scholarships, helping students discover funding opportunities they might otherwise miss.
+A comprehensive MERN stack application demonstrating all 15 AI topics from the learning.md file using the Google Gemini API.
 
 ## 🚀 Features
 
-- **Smart Profile Analysis**: Analyzes student academic background, location, field of study, and special categories
-- **Eligibility Matching**: Uses AI to match students with relevant scholarship opportunities
-- **Structured Results**: Provides organized scholarship information with amounts and deadlines
-- **Real-time Database**: Fetches up-to-date scholarship information through RAG implementation
-- **Multi-category Support**: Covers various student demographics and academic fields
+This project implements **ALL 15 AI topics** from the learning.md file:
 
-## 🛠️ Technical Implementation
+### **1. Top-k Sampling**
+- Controls word selection by considering only the top k most probable words
+- Configurable k values (20, 40, 50) for different use cases
+- Implemented in model configurations
 
-### System Architecture
+### **2. Top-p (Nucleus Sampling)**
+- Dynamic word selection based on cumulative probability
+- Configurable p values (0.8, 0.9, 0.95) for different creativity levels
+- Implemented in model configurations
 
-The project demonstrates key AI/ML concepts:
+### **3. Temperature**
+- Controls creativity vs consistency in AI responses
+- **0.2**: Factual, consistent (profile extraction)
+- **0.6**: Balanced (conversation, recommendations)
+- **1.0**: Creative, diverse (brainstorming)
 
-- **System Prompt Engineering**: Configured as an academic assistant specialized in scholarship guidance
-- **Tuning Parameters**: Optimized for reliable, factual responses (Temperature: 0.3)
-- **Structured Output**: JSON-formatted results for easy integration
-- **Function Calling**: Modular functions for profile processing and database queries
-- **RAG (Retrieval-Augmented Generation)**: Real-time scholarship database integration
+### **4. Zero-shot Prompting**
+- Extract student profiles directly without examples
+- Natural language to structured data conversion
+- `/api/ai/extract-profile/zero-shot` endpoint
 
-### Core Components
+### **5. One-shot Prompting**
+- Establish patterns with one example
+- Consistent profile format extraction
+- `/api/ai/extract-profile/one-shot` endpoint
 
-#### 1. System Prompt
+### **6. Multi-shot Prompting**
+- Better pattern recognition with multiple examples
+- Complex profile categorization
+- `/api/ai/extract-profile/multi-shot` endpoint
+
+### **7. Chain of Thought (CoT) Prompting**
+- Step-by-step reasoning for scholarship matching
+- Explains matching logic and calculates scores
+- `/api/ai/matching/chain-of-thought` endpoint
+
+### **8. Dynamic Prompting**
+- Adjusts prompts based on context
+- Handles international students, work experience, errors
+- `/api/ai/extract-profile/dynamic` endpoint
+
+### **9. Stop Sequences**
+- Specific tokens to stop generation
+- Clean profile data extraction
+- Configurable stop sequences for different content types
+
+### **10. Embeddings**
+- Text to numerical vectors for similarity
+- Profile-scholarship matching algorithm
+- `/api/ai/embeddings/generate` and `/api/ai/embeddings/similarity` endpoints
+
+### **11. Structured Output**
+- Forces responses in specific JSON formats
+- Schema validation and enforcement
+- `/api/ai/extract-profile/structured` endpoint
+
+### **12. Function Calling**
+- AI capability to execute specific functions
+- Database queries, API calls, filtering operations
+- `/api/ai/function-calling` endpoint
+
+### **13. Evaluation Dataset and Testing Framework**
+- Systematic AI performance measurement
+- Test cases with accuracy metrics
+- `/api/ai/evaluate` endpoint
+
+### **14. System and User Prompts**
+- Different role messages in conversation
+- Maintains conversation context
+- `/api/ai/extract-profile/conversational` endpoint
+
+### **15. Tokens and Tokenization**
+- Cost optimization and estimation
+- Context limit management
+- `/api/ai/tokens/estimate` endpoint
+
+## 🏗️ Architecture
+
+### Backend (`scholarsync-backend/`)
+- **Express.js** server with comprehensive middleware
+- **MongoDB** with Mongoose for data persistence
+- **Gemini API** integration with multiple model configurations
+- **Rate limiting** and security middleware
+- **Structured API** with proper error handling
+
+### Frontend (`frontend/`)
+- **React** with modern hooks and state management
+- **Vite** for fast development and building
+- **Responsive design** with CSS Grid and Flexbox
+- **Interactive tabs** for each AI topic demonstration
+- **Real-time API** communication with backend
+
+## 🛠️ Installation & Setup
+
+### Prerequisites
+- Node.js (v16 or higher)
+- MongoDB (local or cloud)
+- Google Gemini API key
+
+### 1. Clone the repository
+```bash
+git clone <repository-url>
+cd ScholarSync
 ```
-"You are an academic assistant helping students find and apply for scholarships they are eligible for."
+
+### 2. Backend Setup
+```bash
+cd scholarsync-backend
+npm install
 ```
 
-#### 2. User Prompt Examples
-- "I'm a 3rd-year Computer Science student in India. What scholarships can I apply for?"
-- "Are there any scholarships for women in engineering?"
-- "Show me scholarships for international students in biotechnology"
+Create `.env` file:
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+MONGODB_URI=mongodb://localhost:27017/scholar-sync
+JWT_SECRET=your_jwt_secret_here
+PORT=5000
+NODE_ENV=development
+```
 
-#### 3. Tuning Parameters
-- **Temperature**: 0.3 (Low temperature for factual, consistent responses)
-- **Max Tokens**: 1000 (Sufficient for detailed scholarship information)
+### 3. Frontend Setup
+```bash
+cd frontend
+npm install
+```
 
-#### 4. Structured Output Format
-```json
-{
-  "student_profile": {
-    "year": "3rd year",
-    "field": "Computer Science",
-    "location": "India",
-    "special_category": "Women in STEM"
-  },
-  "eligible_scholarships": [
-    {
-      "name": "Women in Engineering Scholarship",
-      "amount": "₹50,000",
-      "deadline": "30th September 2025",
-      "eligibility": "Female students in engineering",
-      "provider": "Tech Foundation India"
-    },
-    {
-      "name": "Tech Leaders of Tomorrow",
-      "amount": "₹75,000",
-      "deadline": "15th October 2025",
-      "eligibility": "CS students with 3.5+ GPA",
-      "provider": "Innovation Hub"
+### 4. Start the application
+```bash
+# Terminal 1 - Backend
+cd scholarsync-backend
+npm run dev
+
+# Terminal 2 - Frontend
+cd frontend
+npm run dev
+```
+
+## 📱 Usage
+
+### Interactive Demo
+1. Open the frontend application
+2. Enter text in the input area or use sample inputs
+3. Navigate between different AI topic tabs
+4. Click action buttons to see AI processing in action
+5. View results with detailed model parameters
+
+### API Endpoints
+All AI functionality is available via REST API:
+
+- **Profile Extraction**: `/api/ai/extract-profile/*`
+- **Matching**: `/api/ai/matching/*`
+- **Embeddings**: `/api/ai/embeddings/*`
+- **Evaluation**: `/api/ai/evaluate`
+- **Health Check**: `/api/ai/health`
+
+### Sample API Calls
+
+#### Zero-shot Profile Extraction
+```bash
+curl -X POST http://localhost:5000/api/ai/extract-profile/zero-shot \
+  -H "Content-Type: application/json" \
+  -d '{"text": "I am Sarah, a Computer Science student with 3.8 GPA"}'
+```
+
+#### Chain of Thought Matching
+```bash
+curl -X POST http://localhost:5000/api/ai/matching/chain-of-thought \
+  -H "Content-Type: application/json" \
+  -d '{"studentProfile": {"field": "CS", "gpa": 3.8}, "scholarship": {"field": "CS", "gpa_min": 3.5}}'
+```
+
+## 🔧 Configuration
+
+### Model Configurations
+The application provides three pre-configured models:
+
+1. **Factual Model** (temperature: 0.2, topK: 20, topP: 0.8)
+   - For profile extraction and code generation
+   - High consistency and accuracy
+
+2. **Balanced Model** (temperature: 0.6, topK: 40, topP: 0.9)
+   - For conversation and recommendations
+   - Natural but focused responses
+
+3. **Creative Model** (temperature: 1.0, topK: 50, topP: 0.95)
+   - For brainstorming and creative tasks
+   - High diversity and creativity
+
+### Customization
+You can modify model parameters in `scholarsync-backend/config/gemini.js`:
+
+```javascript
+const models = {
+  custom: genAI.getGenerativeModel({ 
+    model: "gemini-pro",
+    generationConfig: {
+      temperature: 0.5,    // Your custom temperature
+      topK: 30,           // Your custom topK
+      topP: 0.85,         // Your custom topP
+      maxOutputTokens: 1200
     }
-  ],
-  "match_score": 85,
-  "next_steps": "Visit respective websites and apply before deadlines."
-}
+  })
+};
 ```
 
-#### 5. Function Calling Implementation
-```
-def fetchStudentProfile(inputs):
-    """Extract and structure student information from input"""
-    pass
+## 📊 Performance & Monitoring
 
-def queryScholarshipDatabase(profile):
-    """Query scholarship database based on student profile"""
-    pass
+### Token Estimation
+- Real-time token count estimation
+- Cost calculation for API calls
+- Context limit validation
 
-def calculateEligibility(student_profile, scholarship_criteria):
-    """Calculate match score between student and scholarship requirements"""
-    pass
-```
+### Evaluation Framework
+- Automated test case execution
+- Accuracy metrics calculation
+- Performance benchmarking
 
-#### 6. RAG Integration
-- **Real-time Data**: Fetches current scholarship databases and eligibility updates
-- **Knowledge Base**: Maintains updated information on scholarship requirements
-- **Context Retrieval**: Pulls relevant scholarship information based on student queries
+### Health Monitoring
+- API health checks
+- Model configuration status
+- Available endpoints listing
 
-## 🎯 Use Cases
+## 🚀 Deployment
 
-### Primary Users
-- **Undergraduate Students**: Finding scholarships for current academic year
-- **Graduate Students**: Research and merit-based funding opportunities
-- **International Students**: Location-specific and diversity scholarships
-- **Specialized Fields**: STEM, Arts, Business, and other field-specific funding
-
-### Example Scenarios
-
-1. **Computer Science Student**: 
-   - Input: "3rd-year CS student, female, India"
-   - Output: Women in tech scholarships, CS-specific grants, regional opportunities
-
-2. **International Graduate Student**:
-   - Input: "MS in Biotechnology, international student in USA"
-   - Output: International student scholarships, biotech research grants, university-specific funding
-
-3. **Undergraduate Arts Student**:
-   - Input: "2nd-year Fine Arts student, low-income family"
-   - Output: Need-based scholarships, arts-specific grants, state funding programs
-
-## 🔧 Technical Requirements
-
-### Dependencies
-```
-- Python 3.8+
-- OpenAI API / Anthropic Claude API
-- Vector Database (Pinecone/Weaviate)
-- JSON processing libraries
-- Web scraping tools (for database updates)
+### Backend Deployment
+```bash
+cd scholarsync-backend
+npm run build
+npm start
 ```
 
-### Setup Instructions
-1. Clone the repository
-2. Install required dependencies
-3. Configure API keys for AI model access
-4. Set up vector database for RAG implementation
-5. Initialize scholarship database
-6. Run the application
+### Frontend Deployment
+```bash
+cd frontend
+npm run build
+# Deploy the dist/ folder to your hosting service
+```
 
+### Environment Variables
+Ensure all required environment variables are set in production:
+- `GEMINI_API_KEY`
+- `MONGODB_URI`
+- `JWT_SECRET`
+- `PORT`
+- `NODE_ENV`
 
+## 🔒 Security Features
 
+- **Rate Limiting**: Prevents API abuse
+- **Helmet.js**: Security headers
+- **CORS**: Cross-origin resource sharing
+- **Input Validation**: Request sanitization
+- **Error Handling**: Secure error responses
 
+## 📈 Future Enhancements
 
-## 🎓 Learning Outcomes
-
-This project demonstrates proficiency in:
-
-- **Prompt Engineering**: Crafting effective system and user prompts
-- **Parameter Tuning**: Optimizing AI model behavior for specific use cases
-- **Structured Output**: Designing consistent, parseable response formats
-- **Function Calling**: Implementing modular, reusable AI functions
-- **RAG Implementation**: Integrating real-time data retrieval with AI responses
-- **JSON Processing**: Handling structured data for web applications
-- **User Experience Design**: Creating intuitive interfaces for student users
-
-## 🔮 Future Enhancements
-
-- **Machine Learning**: Implement learning algorithms to improve matching accuracy
-- **Multi-language Support**: Expand to support international students globally
-- **Application Tracking**: Help students track their application progress
-- **Personalized Recommendations**: AI-driven suggestions based on student success patterns
-- **Integration APIs**: Connect with university systems and scholarship portals
+- **Real-time Chat**: WebSocket integration
+- **Batch Processing**: Multiple profile extraction
+- **Advanced Analytics**: Usage metrics and insights
+- **Model Fine-tuning**: Custom model training
+- **Multi-language Support**: Internationalization
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our contributing guidelines and submit pull requests for any improvements.
+1. Fork the repository
+2. Create a feature branch
+3. Implement your changes
+4. Add tests if applicable
+5. Submit a pull request
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License.
+
+## 🆘 Support
+
+For questions or issues:
+1. Check the API documentation
+2. Review the learning.md file for topic explanations
+3. Open an issue on GitHub
+4. Contact the development team
 
 ---
 
-**ScholarSync** - Empowering students to find their perfect scholarship match through intelligent AI assistance.
+**Built with ❤️ using the latest AI technologies and best practices**
